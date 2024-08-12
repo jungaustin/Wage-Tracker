@@ -6,3 +6,7 @@ class Job:
         self.hours_worked = []
     def add(self, startTime : datetime, endTime : datetime) -> bool:
         self.hours_worked.append([startTime, endTime])
+        return True
+    def changeWage(self, newWage) -> bool:
+        self.wage = newWage
+        return True
