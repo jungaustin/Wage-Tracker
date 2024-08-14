@@ -5,8 +5,12 @@ class Job:
         self.wage = wage
         self.hours_worked = []
     def add(self, startTime : datetime, endTime : datetime) -> bool:
-        self.hours_worked.append([startTime, endTime])
-        return True
+        if startTime and endTime:
+            if startTime < endTime:
+                self.hours_worked.append([startTime, endTime])
+                return True
+            else:
+                return False
     def changeWage(self, newWage) -> bool:
         self.wage = newWage
         return True
