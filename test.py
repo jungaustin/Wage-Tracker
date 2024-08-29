@@ -1,4 +1,10 @@
-
 import streamlit as st
-from streamlit_datetime_range_picker import datetime_range_picker
-date_range_string = datetime_range_picker()
+from streamlit_gsheets import GSheetsConnection
+
+st.title("Read Google Sheet as DataFrame")
+
+conn = st.connection("gsheets", type=GSheetsConnection)
+df = conn.read(worksheet="Sheet1")
+
+
+st.write(df.head())

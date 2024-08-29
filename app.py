@@ -1,6 +1,8 @@
 import streamlit as st
 from datetime import datetime
 from job import Job
+from streamlit_gsheets import GSheetsConnection
+
 
 st.title("Wage Tracker")
 
@@ -10,7 +12,7 @@ if "jobs" not in st.session_state:
 if "add_button" not in st.session_state:
     st.session_state.add_button = False
 
-action = st.radio("What would you like to do?", ("Create a new job", "Add hours to an existing job", "Clock In/Out"))
+action = st.radio("What would you like to do?", ("Create a new job", "Add hours to an existing job", "Remove hours from existing job", "Clock In/Out"))
 
 if action == "Create a new job":
     job_title_input = st.text_input(
@@ -53,25 +55,29 @@ elif action == "Add hours to an existing job":
             st.write(selected_job.add(datetime.combine(choose_date, clock_in), datetime.combine(choose_date, clock_out)))
             st.session_state.add_button = False
 
+## elif action == "Remove hours from existing job":
+    
+
 elif action == "Clock In/Out":
     job_titles = [job.title for job in st.session_state.jobs]
     selected_job_title = st.selectbox("Select Job", job_titles)
     selected_job = next((job for job in st.session_state.jobs if job.title == selected_job_title), None)
-    col1, col2 = st.columns(2)
-    with col1:
-        clock_in = st.button("Clock In")
-        clock_in_time = datetime.now()
-    with col2:
-        clock_out = st.button("Clock Out")
-        clock_out_time = datetime.now()
-    if clock_in:
-        curr_time = datetime.now()
-        st.write("Clock in time: " + clock_in_time.strftime("%m-%d-%Y %H:%M"))
-    if clock_out:
-        curr_time = datetime.now()
-        st.write("Clock out time: " + clock_out_time.strftime("%m-%d-%Y %H:%M"))
-        if clock_in_time:
-            st.write(selected_job.add(clock_in_time, clock_out_time))
+    if selected_job:
+        col1, col2 = st.columns(2)
+        with col1:
+            clock_in = st.button("Clock In")
+            clock_in_time = datetime.now()
+        with col2:
+            clock_out = st.button("Clock Out")
+            clock_out_time = datetime.now()
+        if clock_in:
+            curr_time = datetime.now()
+            st.write("Clock in time: " + clock_in_time.strftime("%m-%d-%Y %H:%M"))
+        if clock_out:
+            curr_time = datetime.now()
+            st.write("Clock out time: " + clock_out_time.strftime("%m-%d-%Y %H:%M"))
+            if clock_in_time:
+                selected_job.add(clock_in_time, clock_out_time)
 
 if st.session_state.jobs:
     st.write("## Job List")
