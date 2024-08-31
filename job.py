@@ -14,3 +14,4 @@ class Job:
     def changeWage(self, newWage) -> bool:
         self.wage = newWage
         return True
+    

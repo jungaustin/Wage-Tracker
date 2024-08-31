@@ -2,7 +2,9 @@ import streamlit as st
 from datetime import datetime
 from job import Job
 from streamlit_gsheets import GSheetsConnection
-
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+import json
 
 st.title("Wage Tracker")
 
@@ -11,6 +13,12 @@ if "jobs" not in st.session_state:
 
 if "add_button" not in st.session_state:
     st.session_state.add_button = False
+
+
+
+
+
+
 
 action = st.radio("What would you like to do?", ("Create a new job", "Add hours to an existing job", "Remove hours from existing job", "Clock In/Out"))
 
