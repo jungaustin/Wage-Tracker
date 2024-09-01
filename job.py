@@ -11,7 +11,14 @@ class Job:
                 return True
             else:
                 return False
+    def addToSheet(self, startTime : datetime, endTime : datetime, sh, date_format):
+        sheet = sh.worksheet(self.title)
+        startTimeString = startTime.strftime(date_format)
+        endTimeString = endTime.strftime(date_format)
+        duration = (endTime-startTime).total_seconds()
+        hours = int(duration // 3600)
+        minutes = int((duration % 3600) // 60)
+        sheet.append_row([startTimeString, endTimeString, f"{hours}:{minutes:02d}"])
     def changeWage(self, newWage) -> bool:
         self.wage = newWage
         return True
-    
