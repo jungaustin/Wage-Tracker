@@ -18,15 +18,18 @@ class Job:
         sheet = sh.worksheet(self.title)
         data = sheet.get_all_values()
         i = 4
+        latest = True
         for i, row in enumerate(data[3:], start=4):
             temp = row[0]
             if datetime.strptime(temp, date_format) > startTime:
+                latest = False
                 break
         startTimeString = startTime.strftime(date_format)
         endTimeString = endTime.strftime(date_format)
         duration = (endTime-startTime).total_seconds()
         hours = int(duration // 3600)
         minutes = int((duration % 3600) // 60)
+        i = i if not latest else i+1
         sheet.insert_row([startTimeString, endTimeString, f"{hours}:{minutes:02d}"], index = i)
     def changeWage(self, newWage) -> bool:
         self.wage = newWage
