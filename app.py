@@ -41,7 +41,7 @@ if "clock_in_time" not in st.session_state:
 
 st.title("Wage Tracker")
 
-action = st.radio("What would you like to do?", ("Create a new job", "Add hours to an existing job", "Remove hours from existing job", "Clock In/Out"))
+action = st.radio("What would you like to do?", ("Create a new job", "Add hours to an existing job", "Remove hours from existing job", "Clock In/Out", "Get Wage Total"))
 
 if action == "Create a new job":
     with st.form(key='create_job_form'):
@@ -70,11 +70,25 @@ elif action == "Add hours to an existing job":
         clock_in = st.time_input(f"Enter clock in time for {selected_job.title}")
         clock_out = st.time_input(f"Enter clock out time for {selected_job.title}")
         add_hours = st.form_submit_button("Add")
-        if add_hours:
+        if add_hours and clock_in and clock_out:
             start_time = datetime.combine(choose_date, clock_in)
             end_time = datetime.combine(choose_date, clock_out)
             st.write(selected_job.add(start_time, end_time))
             selected_job.addToSheet(start_time, end_time, sh, date_format)
+
+elif action == "Remove hours from existing job":
+    job_titles = [job.title for job in st.session_state.jobs]
+    selected_job_title = st.selectbox("Select Job", job_titles)
+    selected_job = find_job_by_title(selected_job_title)
+    
+    with st.form(key="remove_hours_form"):
+        start_times = [datetime.strftime(time[0], date_format) for time in selected_job.hours_worked]
+        selected_removal = st.selectbox("What do you want to remove", start_times)
+        remove_hours = st.form_submit_button("Remove")
+        if remove_hours and selected_removal:
+            datetime_remove = datetime.strptime(selected_removal, date_format)
+            st.write(selected_job.removeFromSheet(sh, datetime_remove, date_format))
+            action = "Remove hours from existing job"
 
 elif action == "Clock In/Out":
     job_titles = [job.title for job in st.session_state.jobs]
@@ -97,3 +111,15 @@ elif action == "Clock In/Out":
                     selected_job.addToSheet(st.session_state.clock_in_time, clock_out_time, sh, date_format)
                     st.write(True)
                     st.session_state.clock_in_time = None
+elif action == "Get Wage Total":
+    job_titles = [job.title for job in st.session_state.jobs]
+    selected_job_title = st.selectbox("Select Job", job_titles)
+    selected_job = find_job_by_title(selected_job_title)
+    if selected_job:
+        
+        with st.form(key="Get Wage Total"):
+            start_date = st.date_input("Start Date")
+            end_date = st.date_input("End Date")
+            get_wages = st.form_submit_button("Get Wages")
+            if get_wages and start_date <= end_date:
+                selected_job.getTotal(sh, datetime.combine(start_date, datetime.min.time()), datetime.combine(end_date, datetime.max.time()), date_format)
