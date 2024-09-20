@@ -66,13 +66,14 @@ class Job:
                 rowStart = i
                 break
         if rowStart is not None:
+            print(rowStart)
             for i, row in enumerate(data[rowStart-1:], start=rowStart):
                 temp = row[0]
                 if datetime.strptime(temp, date_format) >= endDate:
-                    rowEnd = i
+                    rowEnd = i-1
                     break
-            
-            if rowEnd is not None:
+            print(rowEnd)
+            if rowEnd is None:
                 rowEnd = len(data)
             self.generatePDF(data[rowStart-1:rowEnd], int(data[1][1]))
             return True
