@@ -4,9 +4,14 @@ from job import Job
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import json
+import toml
 
 
 # Authorize Google Sheets access
+secrets_path = "/Users/austin/Desktop/Home/Wage Tracker/.streamlit/secrets.toml"
+secrets = toml.load(secrets_path)
+st.secrets = secrets
+
 creds_dict = st.secrets["gcp_service_account"]
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict)
 client = gspread.authorize(creds)
