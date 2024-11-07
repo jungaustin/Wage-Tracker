@@ -43,6 +43,9 @@ if "jobs" not in st.session_state:
     
 if "clock_in_time" not in st.session_state:
     st.session_state.clock_in_time = None
+    
+if "download" not in st.session_state:
+    st.session_state.download = False
 
 st.title("Wage Tracker")
 
@@ -128,3 +131,13 @@ elif action == "Get Wage Total":
             get_wages = st.form_submit_button("Get Wages")
             if get_wages and start_date <= end_date:
                 selected_job.getTotal(sh, datetime.combine(start_date, datetime.min.time()), datetime.combine(end_date, datetime.max.time()), date_format)
+                st.session_state.download = True
+
+
+if st.session_state.download:
+    with open("output.pdf", "rb") as pdf_file:
+        pdf_data = pdf_file.read()
+        st.download_button(label="Download PDF",
+                            data = pdf_data,
+                            file_name = "Wages.pdf",
+                            mime = "application/pdf")

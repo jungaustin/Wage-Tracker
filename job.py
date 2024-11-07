@@ -113,7 +113,7 @@ class Job:
         pdf.cell(50, 10, txt="Total", border=1)
         total_hours += total_minutes//60
         total_minutes %= 60
-        pdf.cell(50, 10, txt=str(total_hours) + ":" + str(total_minutes), border=1)
+        pdf.cell(50, 10, txt=str(total_hours) + ":" + str(f"{total_minutes:02}"), border=1)
         pdf.ln()
         pdf.cell(50, 10, txt="", border=1)
         pdf.cell(50, 10, txt="Wage", border=1)
