@@ -8,7 +8,7 @@ import toml
 
 
 # Authorize Google Sheets access
-secrets_path = "/Users/austin/Desktop/Home/Wage Tracker/.streamlit/secrets.toml"
+secrets_path = "/Users/austin/Desktop/Home/Projects/Completed Projects/Wage Tracker/.streamlit/secrets.toml"
 secrets = toml.load(secrets_path)
 st.secrets = secrets
 

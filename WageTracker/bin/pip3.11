@@ -1,5 +1,5 @@
 #!/bin/sh
-'''exec' "/Users/austin/Desktop/Home/Wage Tracker/WageTracker/bin/python" "$0" "$@"
+'''exec' "/Users/austin/Desktop/Home/Projects/Completed Projects/Wage Tracker/WageTracker/bin/python3.11" "$0" "$@"
 ' '''
 # -*- coding: utf-8 -*-
 import re

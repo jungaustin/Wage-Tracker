@@ -1,0 +1,6 @@
+WageTracker/
+/.streamlit
+__pycache__
+.gitattributes
+output.pdf
+streamlit-wage-tracker-project-c3d9a4dcd067.json

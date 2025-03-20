@@ -1,4 +1,4 @@
-# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022-2024)
+# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022-2025)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,11 +24,6 @@ if TYPE_CHECKING:
     from streamlit.type_util import SupportsStr
 
 _ALPHANUMERIC_CHAR_REGEX: Final = re.compile(r"^[a-zA-Z0-9_&\-\. ]+$")
-
-
-def decode_ascii(string: bytes) -> str:
-    """Decodes a string as ascii."""
-    return string.decode("ascii")
 
 
 def clean_text(text: SupportsStr) -> str:
@@ -195,12 +190,14 @@ def is_mem_address_str(string):
     return False
 
 
-_RE_CONTAINS_HTML: Final = re.compile(r"(?:</[^<]+>)|(?:<[^<]+/>)")
+def to_snake_case(camel_case_str: str) -> str:
+    """Converts UpperCamelCase and lowerCamelCase to snake_case.
 
+    Examples
+    --------
+        fooBar -> foo_bar
+        BazBang -> baz_bang
 
-def probably_contains_html_tags(s: str) -> bool:
-    """Returns True if the given string contains what seem to be HTML tags.
-
-    Note that false positives/negatives are possible, so this function should not be
-    used in contexts where complete correctness is required."""
-    return bool(_RE_CONTAINS_HTML.search(s))
+    """
+    s1 = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", camel_case_str)
+    return re.sub("([a-z0-9])([A-Z])", r"\1_\2", s1).lower()
