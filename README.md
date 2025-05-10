@@ -7,6 +7,7 @@ Wage Tracker is a lightweight app for tracking work hours, calculating earnings,
 - Add and manage jobs with custom titles and hourly wages
 - Log hours worked by date
 - Automatically calculate daily and total earnings
+- Export wage reports as PDFs for a specific date range
 - Data is stored and synced using Google Sheets
 - Simple, minimal, and efficient — no local database required
 
